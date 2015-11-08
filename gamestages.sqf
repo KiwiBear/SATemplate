@@ -323,13 +323,13 @@ STAGE("STG_PLAYER_START")
 		
 		// Start Player Intro Cut Scene //
 
-		[[["<t size='1'>Two months ago, a deadly virus was detected in Altis's water supply. Altis has lost almost 10% of its population.</t><br/><br/><img size='6' image='virusintro.jpg'/>",6],
-			["<t size='1'>Since the outbreak, the Altis military has been importing fresh drinking water across the island. However, in the past few weeks, rumours have started to spread across the island.</t>",8],
-			["<t size='1'>Locals are starting to think that the Altis government purposely contaminated the water.</t>",5],
+		[[["<t size='1'>Two months ago, a deadly virus was detected in Stratis's water supply. Stratis has lost almost 10% of its population.</t><br/><br/><img size='6' image='virusintro.jpg'/>",6],
+			["<t size='1'>Since the outbreak, the Stratis military has been importing fresh drinking water across the island. However, in the past few weeks, rumours have started to spread across the island.</t>",8],
+			["<t size='1'>Locals are starting to think that the Stratis government purposely contaminated the water.</t>",5],
 			["<t size='1'>Faster than the disease, violence is spreading across the island.</t>",4],
-			["<t size='1'>A village leader in Abdera has started to organize a violet rebellion against the Altis government and military. As a result, the Altis government has evacuated to the nearby island of Stratis.</t><br/><br/><img size='6' image='leaderintro.jpg'/>",10],
-			["<t size='1'>You, along with the rest of the Altis military have been ordered to clean up the mess. A small Altis recon team has already been deployed 12 hours ago to try and locate the rebel leader.</t>",8],
-			["<t size='1'>17:00, Altis military deployment zone</t>",3]],0,5] call SA_fnc_createBlackCutScene;
+			["<t size='1'>A village leader has started to organize a violet rebellion against the Stratis government and military. As a result, the Stratis government has evacuated to the nearby island of Stratis.</t><br/><br/><img size='6' image='leaderintro.jpg'/>",10],
+			["<t size='1'>You, along with the rest of the Stratis military have been ordered to clean up the mess. A small Stratis recon team has already been deployed 12 hours ago to try and locate the rebel leader.</t>",8],
+			["<t size='1'>17:00, Stratis military deployment zone</t>",3]],0,5] call SA_fnc_createBlackCutScene;
 	}
 	EXEC {
 		_returnValue = STG_PLAYER_BASE;
@@ -408,9 +408,9 @@ STAGE("STG_PLAYER_INTRO")
 			 sleep 12;
 			obj_commanding_officer sideChat "Alright soldiers, listen up!";
 			sleep 4;
-			obj_commanding_officer sideChat "We heard from our recon team an hour ago that they've spotted the rebel leader in the town of Abdera. However, we've since lost contact with recon.";
+			obj_commanding_officer sideChat "We heard from our recon team an hour ago that they've spotted the rebel leader near Air Station Mike. However, we've since lost contact with recon.";
 			sleep 7;
-			obj_commanding_officer sideChat "First, I need you to locate recon's camp near the town of Abdera and join up with them. They will provide you with the latest intel.";
+			obj_commanding_officer sideChat "First, I need you to locate recon's camp and join up with them. They will provide you with the latest intel.";
 			sleep 7;
 			obj_commanding_officer sideChat "Second, you need to locate, capture alive and extract the rebel leader.";
 			sleep 7;
@@ -534,7 +534,7 @@ STAGE("STG_PLAYER_ASSIGN_LEADER_TASK")
 		_showHint = [_this, 0, true] call BIS_fnc_param;
 		_assignTask = [_this, 1, true] call BIS_fnc_param;
 		if( isNil "g_detain_leader" ) then {
-			g_detain_leader = [player, "DETAIN_LOADER", "Detain Rebel Leader", "Locate and detain the rebel leader in Abdera", "Last Known Position",getMarkerPos "leader_wp", _assignTask, _showHint] call SA_fnc_createLocalTask;
+			g_detain_leader = [player, "DETAIN_LOADER", "Detain Rebel Leader", "Locate and detain the rebel leader in Air Station", "Last Known Position",getMarkerPos "leader_wp", _assignTask, _showHint] call SA_fnc_createLocalTask;
 		};
 	}
 	EXEC {}
