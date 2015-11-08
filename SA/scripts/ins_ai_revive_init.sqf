@@ -237,7 +237,7 @@ if(isServer) then {
 			} forEach _allFriendlyAiUnits;
 
 			{
-				private ["_lastLoadOut", "_lastGroup","_unitType","_position"];
+				private ["_lastLoadOut", "_lastGroup","_unitType","_position", "_side"];
 				if ( !alive _x && !isNull _x && vehicle _x == _x && !(_x getVariable ["SA_Handling_Revive",false]) ) then {
 				
 					_x setVariable ["SA_Handling_Revive",true];
@@ -246,10 +246,13 @@ if(isServer) then {
 					
 					_unitType = (format["%1", typeof _x]);
 					_position = [(position _x) select 0, (position _x) select 1];
+					
 
 					deleteVehicle _x;
 					
 					_newUnit = _tempGroup createUnit [_unitType, _position, [], 0, "CAN_COLLIDE"];
+					
+					//_side = side _newUnit;
 					
 					_newUnitMarker = [position _newUnit, "ColorRed", "AI is down"] call SA_fnc_createDotMarker;
 					
@@ -265,8 +268,8 @@ if(isServer) then {
 					_newUnit setVariable ["SA_Last_Known_Group", _lastGroup];
 					
 					_newUnit setVariable ["INS_REV_PVAR_is_unconscious", true, true];
-					_newUnit setVariable ["INS_REV_PVAR_playerSide", _side, true];
-					_newUnit setVariable ["INS_REV_PVAR_playerGroup", _group, true];
+					//_newUnit setVariable ["INS_REV_PVAR_playerSide", _side, true];
+					//_newUnit setVariable ["INS_REV_PVAR_playerGroup", _group, true];
 					_newUnit setVariable ["INS_REV_PVAR_who_taking_care_of_injured", nil, true];
 					_newUnit setVariable ["INS_REV_revived", false, true];
 					INS_REV_GVAR_start_unconscious = _newUnit;
