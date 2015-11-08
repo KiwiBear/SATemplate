@@ -1,0 +1,39 @@
+//Create pip below helicopter
+//_pip = [myhelo,[0,4,-12]] call fnc_ghst_heli_pip;
+//player addAction ["<t color='#00ffff'>Start/Stop Landing Camera</t>", {[0,2,-12] call fnc_ghst_heli_pip;}, [], 3, false, true, "","alive _target and _this == driver _target and ((_target iskindof 'Helicopter_Base_F') and !(_target iskindof 'UAV_01_base_F'))"];
+fnc_ghst_heli_pip = {
+
+	private ["_heli","_cam_pos","_cam_loc"];
+	_heli = vehicle player;
+	_cam_pos = _this;//[0,2,-12]
+	
+	if (player getVariable "ghst_helopip") then {
+	
+		[] call BIS_fnc_PiP;
+		closeDialog 0;
+		deletevehicle ghst_pip_cameratarget;
+		player setVariable ["ghst_helopip", false];
+	
+	} else {
+	
+		player setVariable ["ghst_helopip", true];
+		[] call BIS_fnc_PiP;
+		ghst_pip_cameratarget = "Sign_Sphere25cm_F" createVehicleLocal (getposatl _heli);
+		sleep 0.1;
+		ghst_pip_cameratarget attachto [_heli ,_cam_pos];
+		_cam_loc = ([0,-3,-3]);//
+		ghst_pip = ["rendertarget0",[[_heli,_cam_loc],ghst_pip_cameratarget],_heli] call BIS_fnc_PIP;
+		ghst_pip camCommit 0;
+	
+	};
+
+	while {(player getVariable "ghst_helopip")} do {
+		sleep 5;
+		if !(alive player) exitwith {};
+	};
+	[] call BIS_fnc_PiP;
+	closeDialog 0;
+	deletevehicle ghst_pip_cameratarget;
+	player setVariable ["ghst_helopip", false];
+		
+};

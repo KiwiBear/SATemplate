@@ -1,0 +1,1 @@
+[_this select 1,_this select 0] call VAS_fnc_openVAS;
