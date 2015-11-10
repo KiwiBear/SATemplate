@@ -126,7 +126,7 @@ class Mission
 	randomSeed=9114063;
 	class Intel
 	{
-		briefingName="SA Tactical Operations (Altis) v2.1.1";
+		briefingName="SA Tactical Operations (Altis) v2.1.2";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.29999998;
@@ -4677,7 +4677,7 @@ class Mission
 		};
 		class Item16
 		{
-			position[]={14989.012,17.846289,17185.898};
+			position[]={15166.982,17.91,17226.033};
 			name="veh_spawn";
 			text="Vehicle Spawn";
 			type="Empty";
