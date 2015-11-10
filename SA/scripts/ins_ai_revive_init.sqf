@@ -177,6 +177,7 @@ if(isServer) then {
 				//diag_log format ["%1, %2, %3, %4", !isNull _reviveTarget,  not ([_reviveTarget] call SA_fnc_isRevivable),  !alive _medic, _medic];
 				if( (!isNull _reviveTarget && not ([_reviveTarget] call SA_fnc_isRevivable)) || ( !alive _medic)) then {
 					[_medic] joinSilent (_medic getVariable "original_group");
+					_medic setVariable ["original_group", nil];
 					_medic setVariable ["revive_target",objNull];
 					_reviveTarget setVariable ["medic_requested", objNull];
 					_medics_to_remove pushBack _medic;
@@ -184,6 +185,7 @@ if(isServer) then {
 					_start_time = _medic getVariable ["start_time_ms", diag_tickTime];
 					if( diag_tickTime - _start_time > 60000 ) then {
 						[_medic] joinSilent (_medic getVariable "original_group");
+						_medic setVariable ["original_group", nil];
 						_medic setVariable ["revive_target",objNull];
 						_reviveTarget setVariable ["medic_requested", objNull];
 						_medics_to_remove pushBack _medic;
@@ -225,7 +227,7 @@ if(isServer) then {
 			   if ((side _x) == West && !(isPlayer _x)) then
 			   {
 					_x setVariable ["SA_Last_Known_Loadout", [_x] call SA_fnc_getLoadout];
-					_x setVariable ["SA_Last_Known_Group", group _x];
+					_x setVariable ["SA_Last_Known_Group", _x getVariable ["original_group",group _x]];
 					_x setVariable ["SA_AI_Revive_Seen", true];
 			   };
 			} forEach allUnits;
