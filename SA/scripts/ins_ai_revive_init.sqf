@@ -222,7 +222,7 @@ if(isServer) then {
 		while {true} do {
 			
 			{
-			   if ((side _x) == West && !(isPlayer _x) && vehicle _x == _x ) then
+			   if ((side _x) == West && !(isPlayer _x)) then
 			   {
 					_x setVariable ["SA_Last_Known_Loadout", [_x] call SA_fnc_getLoadout];
 					_x setVariable ["SA_Last_Known_Group", group _x];
@@ -231,7 +231,7 @@ if(isServer) then {
 			} forEach allUnits;
 
 			{
-				if ( (side _x) == West && !(isPlayer _x) && vehicle _x == _x && !(_x getVariable ["SA_Handling_Revive",false]) &&  && (_x getVariable ["SA_AI_Revive_Seen",false]) ) then {
+				if ( !(_x getVariable ["SA_Handling_Revive",false]) && (_x getVariable ["SA_AI_Revive_Seen",false]) ) then {
 				
 					_x setVariable ["SA_Handling_Revive",true];
 					_lastLoadOut = _x getVariable ["SA_Last_Known_Loadout", nil];
@@ -256,10 +256,11 @@ if(isServer) then {
 					
 					_newUnit setVariable ["SA_Last_Known_Loadout", _lastLoadOut];
 					_newUnit setVariable ["SA_Last_Known_Group", _lastGroup];
+					_newUnit setVariable ["SA_AI_Revive_Seen", true];
 					
 					_newUnit setVariable ["INS_REV_PVAR_is_unconscious", true, true];
-					_newUnit setVariable ["INS_REV_PVAR_playerSide", _side, true];
-					_newUnit setVariable ["INS_REV_PVAR_playerGroup", _group, true];
+					//_newUnit setVariable ["INS_REV_PVAR_playerSide", _side, true];
+					//_newUnit setVariable ["INS_REV_PVAR_playerGroup", _group, true];
 					_newUnit setVariable ["INS_REV_PVAR_who_taking_care_of_injured", nil, true];
 					_newUnit setVariable ["INS_REV_revived", false, true];
 					INS_REV_GVAR_start_unconscious = _newUnit;
@@ -357,7 +358,7 @@ if(isServer) then {
 						
 						_player enableAI "ANIM";
 						
-						[_player,"AmovPercMstpSrasWrflDnon"] remoteExec ["switchMove"]; 
+						[_player,"AmovPercMstpSrasWrflDnon"] remoteExec ["playMove"]; 
 						
 						deleteMarker _newUnitMarker;
 						
@@ -366,7 +367,7 @@ if(isServer) then {
 					};
 					
 				};
-			} forEach allDead;
+			} forEach allDeadMen;
 
 			sleep 5;
 			
