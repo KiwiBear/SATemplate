@@ -213,6 +213,7 @@ if(isServer) then {
 	[] spawn {
 	
 		private ["_tempGroup","_tempGroupLeader","_newUnit"];
+		private ["_lastLoadOut", "_lastGroup","_unitType","_position"];
 		_tempGroup = createGroup West;
 		_tempGroupLeader = _tempGroup createUnit ["LOGIC",[0, 0, 0] , [], 0, ""];
 	
@@ -221,24 +222,16 @@ if(isServer) then {
 		while {true} do {
 			
 			{
-			   if ((side _x) == West && !(isPlayer _x) ) then
+			   if ((side _x) == West && !(isPlayer _x) && vehicle _x == _x ) then
 			   {
-				  if!(_x in _allFriendlyAiUnits) then {
-					_allFriendlyAiUnits pushBack _x;
-				  }
-			   };
-			} forEach allUnits;
-			
-			{
-				if ( alive _x && vehicle _x == _x  ) then {
 					_x setVariable ["SA_Last_Known_Loadout", [_x] call SA_fnc_getLoadout];
 					_x setVariable ["SA_Last_Known_Group", group _x];
-				};
-			} forEach _allFriendlyAiUnits;
+					_x setVariable ["SA_AI_Revive_Seen", true];
+			   };
+			} forEach allUnits;
 
 			{
-				private ["_lastLoadOut", "_lastGroup","_unitType","_position"];
-				if ( !alive _x && !isNull _x && vehicle _x == _x && !(_x getVariable ["SA_Handling_Revive",false]) ) then {
+				if ( (side _x) == West && !(isPlayer _x) && vehicle _x == _x && !(_x getVariable ["SA_Handling_Revive",false]) &&  && (_x getVariable ["SA_AI_Revive_Seen",false]) ) then {
 				
 					_x setVariable ["SA_Handling_Revive",true];
 					_lastLoadOut = _x getVariable ["SA_Last_Known_Loadout", nil];
@@ -373,9 +366,9 @@ if(isServer) then {
 					};
 					
 				};
-			} forEach _allFriendlyAiUnits;
+			} forEach allDead;
 
-			sleep 2;
+			sleep 5;
 			
 		};
 	};
