@@ -1,12 +1,19 @@
 Currently in v2.1.3 (Altis):
 
 Squad Halo (Only available to squad leader. Squad members w/in 200 meters of SL will be included in the HALO jump) (SA Created)
+
 Individual Halo (SA Created)
+
   Halo at 4.5k, auto open at 300m
+
   Use shift and z to sleep up and slow down decent
+
   Right control to cut main chute
+
   Main chute can fail
+
   Disable auto deploy via action menu
+
 HC Command Radio (SA Created)
 INS Revive
 INS AI Revive (SA Created)
