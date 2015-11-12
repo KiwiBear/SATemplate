@@ -427,6 +427,7 @@ SA_CUSTOM_ACTION_MENU =
 	//["Enable Auto Revive", [0], "", -5, [["expression", "[groupSelectedUnits player, true] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
 	["Enable Auto Revive (1 Revive)", [0], "", -5, [["expression", "[groupSelectedUnits player, true, 1] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
 	["Disable Auto Revive", [0], "", -5, [["expression", "[groupSelectedUnits player, false, 0] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
+	["Halo Jump (Without Leader)", [0], "", -5, [["expression", "[halo, groupSelectedUnits player] spawn SA_fnc_haloJumpMap"]], "1", "1"],
 	["Other Actions", [7], "#ACTION", -5, [["expression", "player sidechat ""Submenu"" "]], "1", "1"]
 ];
 

@@ -23,8 +23,8 @@ waitUntil {!isNil "INS_REV_FNCT_init_completed"};
 [] execVM "SA\scripts\sa_squad_join.sqf";
 
 // SA: Halo
-halo addAction ["<t size='1.5' shadow='2' color='#00ffff'>HALO</t> <img size='2' color='#00ffff' shadow='2' image='\A3\Air_F_Beta\Parachute_01\Data\UI\Portrait_Parachute_01_CA.paa'/>", { [_this select 1] spawn SA_fnc_haloJumpMap }, [], 5, true, true, "","alive _target"];
-halo addAction ["<t size='1.5' shadow='2' color='#00ffff'>SQUAD HALO</t> <img size='2' color='#00ffff' shadow='2' image='\A3\Air_F_Beta\Parachute_01\Data\UI\Portrait_Parachute_01_CA.paa'/>", { [_this select 1, true] spawn SA_fnc_haloJumpMap }, [], 5, true, true, "","alive _target && leader _this == _this && (count units group _this) > 1"];
+halo addAction ["<t size='1.5' shadow='2' color='#00ffff'>HALO</t> <img size='2' color='#00ffff' shadow='2' image='\A3\Air_F_Beta\Parachute_01\Data\UI\Portrait_Parachute_01_CA.paa'/>", { [halo, _this select 1] spawn SA_fnc_haloJumpMap }, [], 5, true, true, "","alive _target"];
+halo addAction ["<t size='1.5' shadow='2' color='#00ffff'>SQUAD HALO</t> <img size='2' color='#00ffff' shadow='2' image='\A3\Air_F_Beta\Parachute_01\Data\UI\Portrait_Parachute_01_CA.paa'/>", { [halo, _this select 1, true] spawn SA_fnc_haloJumpMap }, [], 5, true, true, "","alive _target && leader _this == _this && (count units group _this) > 1"];
 
 // AI Cache
 //if (isServer) then {[2000,-1,false,2000,2000,2000] execVM "zbe_cache\main.sqf";};
