@@ -81,6 +81,8 @@ if(isServer) then {
 				//diag_log format ["Possible Medic: %1, %2, %3, %4", !isPlayer _possibleMedic, alive _possibleMedic, !(_possibleMedic getVariable "INS_REV_PVAR_is_unconscious"), _possibleMedic isKindOf "Man"];
 				if( !isPlayer _possibleMedic && 
 					alive _possibleMedic &&
+					(_possibleMedic getVariable ["SA_auto_revive",false] || !isPlayer (leader _possibleMedic) || leader _possibleMedic == _unit ) &&
+					((_possibleMedic getVariable ["SA_auto_revive_count",0]) > 0 || !isPlayer (leader _possibleMedic) || leader _possibleMedic == _unit ) &&
 					!(_possibleMedic getVariable ["INS_REV_PVAR_is_unconscious",false]) &&
 					_possibleMedic isKindOf "Man" ) then {
 					
@@ -148,8 +150,10 @@ if(isServer) then {
 						//diag_log format ["Medic Requested: %1", _medic];
 						_unit setVariable ["medic_requested", _medic];
 						_medic setVariable ["original_group", group _medic];
+						_medic setVariable ["original_team", assignedTeam _medic];
 						_medic setVariable ["revive_target", _unit];
-						_medic setVariable ["start_time_ms", diag_tickTime];
+						_medic setVariable ["start_time_sec", diag_tickTime];
+						_medic setVariable ["SA_auto_revive_count", (_medic getVariable ["SA_auto_revive_count",1]) - 1, true];
 						if(count (units group _medic) > 1) then {
 							_newGroup = createGroup (side _medic);
 							[_medic] join _newGroup;
@@ -175,17 +179,21 @@ if(isServer) then {
 				_medic = _x;
 				_reviveTarget = _medic getVariable ["revive_target",objNull];
 				//diag_log format ["%1, %2, %3, %4", !isNull _reviveTarget,  not ([_reviveTarget] call SA_fnc_isRevivable),  !alive _medic, _medic];
-				if( (!isNull _reviveTarget && not ([_reviveTarget] call SA_fnc_isRevivable)) || ( !alive _medic)) then {
+				if( (!isNull _reviveTarget && not ([_reviveTarget] call SA_fnc_isRevivable)) || ( !alive _medic) ) then {
 					[_medic] joinSilent (_medic getVariable "original_group");
+					[_medic,(_medic getVariable "original_team")] remoteExec ["assignTeam"];
 					_medic setVariable ["original_group", nil];
+					_medic setVariable ["original_team", nil];
 					_medic setVariable ["revive_target",objNull];
 					_reviveTarget setVariable ["medic_requested", objNull];
 					_medics_to_remove pushBack _medic;
 				} else {
-					_start_time = _medic getVariable ["start_time_ms", diag_tickTime];
-					if( diag_tickTime - _start_time > 60000 ) then {
+					_start_time = _medic getVariable ["start_time_sec", diag_tickTime];
+					if( diag_tickTime - _start_time > 60 ) then {
 						[_medic] joinSilent (_medic getVariable "original_group");
+						[_medic,(_medic getVariable "original_team")] remoteExec ["assignTeam"];
 						_medic setVariable ["original_group", nil];
+						_medic setVariable ["original_team", nil];
 						_medic setVariable ["revive_target",objNull];
 						_reviveTarget setVariable ["medic_requested", objNull];
 						_medics_to_remove pushBack _medic;
@@ -207,15 +215,12 @@ if(isServer) then {
 
 };
 
-
-SA_revive_queue = [];
-
 if(isServer) then {
 	
 	[] spawn {
 	
 		private ["_tempGroup","_tempGroupLeader","_newUnit"];
-		private ["_lastLoadOut", "_lastGroup","_unitType","_position"];
+		private ["_lastLoadOut", "_lastGroup","_unitType","_position","_lastTeam"];
 		_tempGroup = createGroup West;
 		_tempGroupLeader = _tempGroup createUnit ["LOGIC",[0, 0, 0] , [], 0, ""];
 	
@@ -228,6 +233,7 @@ if(isServer) then {
 			   {
 					_x setVariable ["SA_Last_Known_Loadout", [_x] call SA_fnc_getLoadout];
 					_x setVariable ["SA_Last_Known_Group", _x getVariable ["original_group",group _x]];
+					_x setVariable ["SA_Last_Known_Team", _x getVariable ["original_team",assignedTeam _x]];
 					_x setVariable ["SA_AI_Revive_Seen", true];
 			   };
 			} forEach allUnits;
@@ -238,6 +244,7 @@ if(isServer) then {
 					_x setVariable ["SA_Handling_Revive",true];
 					_lastLoadOut = _x getVariable ["SA_Last_Known_Loadout", nil];
 					_lastGroup = _x getVariable ["SA_Last_Known_Group", grpNull];
+					_lastTeam = _x getVariable ["SA_Last_Known_Team", "MAIN"];
 					
 					_unitType = (format["%1", typeof _x]);
 					_position = [(position _x) select 0, (position _x) select 1];
@@ -258,6 +265,7 @@ if(isServer) then {
 					
 					_newUnit setVariable ["SA_Last_Known_Loadout", _lastLoadOut];
 					_newUnit setVariable ["SA_Last_Known_Group", _lastGroup];
+					_newUnit setVariable ["SA_Last_Known_Team", _lastTeam];
 					_newUnit setVariable ["SA_AI_Revive_Seen", true];
 					
 					_newUnit setVariable ["INS_REV_PVAR_is_unconscious", true, true];
@@ -269,11 +277,12 @@ if(isServer) then {
 					publicVariable "INS_REV_GVAR_start_unconscious";
 					["INS_REV_GVAR_start_unconscious", _newUnit] call INS_REV_FNCT_add_actions;
 								
-					[_newUnit,_lastGroup,_newUnitMarker] spawn {
-						private ["_player", "_condition","_lastGroup","_newUnitMarker"];
+					[_newUnit,_lastGroup,_newUnitMarker,_lastTeam] spawn {
+						private ["_player", "_condition","_lastGroup","_newUnitMarker","_lastTeam"];
 						_player = _this select 0;
 						_lastGroup = _this select 1;
 						_newUnitMarker = _this select 2;
+						_lastTeam = _this select 3;
 						_condition = _player getVariable ["INS_REV_PVAR_is_unconscious",false];
 						while {_condition} do
 						{
@@ -364,7 +373,8 @@ if(isServer) then {
 						
 						deleteMarker _newUnitMarker;
 						
-						[_player] join _lastGroup;
+						[_player] joinSilent _lastGroup;
+						[_player,_lastTeam] remoteExec ["assignTeam"];
 						
 					};
 					
@@ -376,3 +386,75 @@ if(isServer) then {
 		};
 	};
 };
+
+SA_fnc_enableAutoRevive = {
+	private ["_units","_enabled","_count"];
+	_units = param [0,[]];
+	_enabled = param [1,false];
+	_count = param [2,1];
+	{
+		if( !isPlayer _x) then {
+			_x setVariable ["SA_auto_revive", _enabled, true];
+			_x setVariable ["SA_auto_revive_count", _count, true];
+		};
+	} forEach _units;
+};
+
+
+//SA_CUSTOM_ACTION_MENU_SUBMENU =
+//[
+//	["Action",true],
+//	["Option-1", [2], "", -5, [["expression", "player sidechat ""-1"" "]], "0", "0", "\ca\ui\data\cursor_support_ca"],
+//	["Option 0", [3], "", -5, [["expression", "player sidechat "" 0"" "]], "1", "0", "\ca\ui\data\cursor_support_ca"],
+//	["Option 1", [4], "", -5, [["expression", "player sidechat "" 1"" "]], "1", "CursorOnGround", "\ca\ui\data\cursor_support_ca"]
+//];
+
+SA_CUSTOM_ACTION_MENU = 
+[
+	// First array: "User menu" This will be displayed under the menu, bool value: has Input Focus or not.
+	// Note that as to version Arma2 1.05, if the bool value set to false, Custom Icons will not be displayed.
+	["Action",false],
+	// Syntax and semantics for following array elements:
+	// ["Title_in_menu", [assigned_key], "Submenu_name", CMD, [["expression",script-string]], "isVisible", "isActive" <, optional icon path> ]
+	// Title_in_menu: string that will be displayed for the player
+	// Assigned_key: 0 - no key, 1 - escape key, 2 - key-1, 3 - key-2, ... , 10 - key-9, 11 - key-0, 12 and up... the whole keyboard
+	// Submenu_name: User menu name string (eg "#USER:MY_SUBMENU_NAME" ), "" for script to execute.
+	// CMD: (for main menu:) CMD_SEPARATOR -1; CMD_NOTHING -2; CMD_HIDE_MENU -3; CMD_BACK -4; (for custom menu:) CMD_EXECUTE -5
+	// script-string: command to be executed on activation. (no arguments passed)
+	// isVisible - Boolean 1 or 0 for yes or no, - or optional argument string, eg: "CursorOnGround"
+	// isActive - Boolean 1 or 0 for yes or no - if item is not active, it appears gray.
+	// optional icon path: The path to the texture of the cursor, that should be used on this menuitem.
+	//["Enable Auto Revive", [0], "", -5, [["expression", "[groupSelectedUnits player, true] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
+	["Enable Auto Revive (1 Revive)", [0], "", -5, [["expression", "[groupSelectedUnits player, true, 1] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
+	["Disable Auto Revive", [0], "", -5, [["expression", "[groupSelectedUnits player, false, 0] spawn SA_fnc_enableAutoRevive;"]], "1", "1"],
+	["Other Actions", [7], "#ACTION", -5, [["expression", "player sidechat ""Submenu"" "]], "1", "1"]
+];
+
+[] spawn {
+	while {true} do {
+		waitUntil { commandingMenu == "RscGroupRootMenu" };
+		waitUntil { commandingMenu == "#ACTION" };
+		showCommandingMenu "#USER:SA_CUSTOM_ACTION_MENU";
+	};
+};
+
+[] spawn {
+	private ["_selectedGroupUnits","_keyDownHandler"];
+	while {true} do {
+		waitUntil { commandingMenu == "#USER:SA_CUSTOM_ACTION_MENU" };
+		SA_command_actions_backspace_pressed = false;
+		SA_command_actions_selected_units = [];
+		_keyDownHandler = (finddisplay 46) displayaddeventhandler ["keydown",
+			"if( _this select 1 == 14 && commandingMenu == ""#USER:SA_CUSTOM_ACTION_MENU"") then { SA_command_actions_selected_units = groupSelectedUnits player; SA_command_actions_backspace_pressed = true};"];
+		waitUntil { commandingMenu == "" };
+		(finddisplay 46) displayremoveeventhandler ["keydown",_keyDownHandler];
+		if(SA_command_actions_backspace_pressed) then {
+			showCommandingMenu "RscGroupRootMenu";
+			{
+				player groupSelectUnit [_x, true];
+			} forEach (SA_command_actions_selected_units);
+		};
+	};
+};
+	
+	
