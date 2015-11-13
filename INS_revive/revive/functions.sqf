@@ -816,17 +816,19 @@ INS_REV_FNCT_add_actions = {
 		_unit setVariable ["INS_REV_id_action_revive", _id_action, false];
 		
 		// Drag body action
-		_id_action = _unit addAction [
-			STR_INS_REV_action_drag_body,			/* Title */
-			"INS_revive\revive\act_drag_body.sqf",	/* Filename */
-			[],										/* Arguments */
-			10,										/* Priority */
-			false,									/* ShowWindow */
-			true,									/* HideOnUse */
-			"",										/* Shortcut */
-			"player distance _target < 2 && !(player getVariable ""INS_REV_PVAR_is_unconscious"") && INS_REV_CFG_player_can_drag_body && alive _target && (_target getVariable ""INS_REV_PVAR_is_unconscious"") && isNil {_target getVariable ""INS_REV_PVAR_who_taking_care_of_injured""}"	/* Condition */
-		];
-		_unit setVariable ["INS_REV_id_action_drag_body", _id_action, false];
+		if(isPlayer _unit) then {
+			_id_action = _unit addAction [
+				STR_INS_REV_action_drag_body,			/* Title */
+				"INS_revive\revive\act_drag_body.sqf",	/* Filename */
+				[],										/* Arguments */
+				10,										/* Priority */
+				false,									/* ShowWindow */
+				true,									/* HideOnUse */
+				"",										/* Shortcut */
+				"player distance _target < 2 && !(player getVariable ""INS_REV_PVAR_is_unconscious"") && INS_REV_CFG_player_can_drag_body && alive _target && (_target getVariable ""INS_REV_PVAR_is_unconscious"") && isNil {_target getVariable ""INS_REV_PVAR_who_taking_care_of_injured""}"	/* Condition */
+			];
+			_unit setVariable ["INS_REV_id_action_drag_body", _id_action, false];
+		};
 	};
 };
 

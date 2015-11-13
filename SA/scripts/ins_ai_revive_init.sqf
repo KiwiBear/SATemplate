@@ -236,10 +236,14 @@ if(isServer) then {
 					_x setVariable ["SA_Last_Known_Team", _x getVariable ["original_team",assignedTeam _x]];
 					_x setVariable ["SA_AI_Revive_Seen", true];
 			   };
+			   if (isPlayer _x && !(_x getVariable ["SA_AI_Revive_Is_Player",false])) then
+			   {
+					_x setVariable ["SA_AI_Revive_Is_Player", true];
+			   };
 			} forEach allUnits;
 
 			{
-				if ( !(_x getVariable ["SA_Handling_Revive",false]) && (_x getVariable ["SA_AI_Revive_Seen",false]) ) then {
+				if ( !(_x getVariable ["SA_Handling_Revive",false]) && (_x getVariable ["SA_AI_Revive_Seen",false]) && !(_x getVariable ["SA_AI_Revive_Is_Player",false]) ) then {
 				
 					_x setVariable ["SA_Handling_Revive",true];
 					_lastLoadOut = _x getVariable ["SA_Last_Known_Loadout", nil];
@@ -252,6 +256,7 @@ if(isServer) then {
 					deleteVehicle _x;
 					
 					_newUnit = _tempGroup createUnit [_unitType, _position, [], 0, "CAN_COLLIDE"];
+					_newUnit setDir (random floor(random 361));
 					
 					_newUnitMarker = [position _newUnit, "ColorRed", "AI is down"] call SA_fnc_createDotMarker;
 					

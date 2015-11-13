@@ -16,7 +16,7 @@ class INS_REV_PARAM_allow_revive {
 class INS_REV_PARAM_respawn_delay {
     title="    Player Respawn Delay";
 	values[]={30,60,120,240,480};
-    default = 480;
+    default = 120;
     texts[]={"30 Sec","1 Min","2 Min","4 Min","8 Min"};
 };
 class INS_REV_PARAM_life_time {
