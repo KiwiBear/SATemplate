@@ -1,18 +1,24 @@
-<b>Currently in v2.1.3 (Altis)</b>
+<b>Currently in v2.1.9 (Altis)</b>
 
 Squad Halo (Only available to squad leader. Squad members w/in 200 meters of SL will be included in the HALO jump) (SA Created)
 
 Individual Halo (SA Created)
 
-Halo at 4.5k, auto open at 300m
+ - Halo at 4.5k, auto open at 300m
 
-Use shift and z to sleep up and slow down decent
+ - Use shift and z to sleep up and slow down decent
 
-Right control to cut main chute
+ - Right control to cut main chute
 
-Main chute can fail
+ - Main chute can fail
 
-Disable auto deploy via action menu
+ - Disable auto deploy via action menu
+
+Custom #6 group action menu
+
+ - AI Halo (lets you command AI to halo jump if they're near the halo board)
+
+ - AI Revive (lets you command AI to revive others) 
 
 HC Command Radio (SA Created)
 
@@ -46,19 +52,19 @@ Player names above head
 
 COS - Civilian Occupation System
 
-  Can be disabled via mission param
+ - Can be disabled via mission param
 
 Support system
 
-  Heli transport (for SL and HC only)
+ - Heli transport (for SL and HC only)
 
-  Ammo drop (for SL and HC only)
+ - Ammo drop (for SL and HC only)
 
-  CAS (Heli) (for JTAC and HC only)
+ - CAS (Heli) (for JTAC and HC only)
 
-  CAS (Bomb run) (for JTAC and HC only)
+ - CAS (Bomb run) (for JTAC and HC only)
 
-  Artillery (for JTAC and HC only), Disabled by default
+ - Artillery (for JTAC and HC only), Disabled by default
 
 Headless client support
 
