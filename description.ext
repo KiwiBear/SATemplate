@@ -64,6 +64,14 @@ class Params
 		default = 1;
 	};
 	
+	class PARAM_AIReviveLimit
+	{
+		title = "AI Revive Limit:";
+		values[] = {1,5, 10, 20};
+		texts[] = {"1 min","5 min", "10 min", "20 min"};
+		default = 5;
+	};
+	
 	class PARAM_Supports
 	{
 		title = ":: Support Settings";

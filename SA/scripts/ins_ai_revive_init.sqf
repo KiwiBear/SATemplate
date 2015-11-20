@@ -283,12 +283,14 @@ if(isServer) then {
 					["INS_REV_GVAR_start_unconscious", _newUnit] call INS_REV_FNCT_add_actions;
 								
 					[_newUnit,_lastGroup,_newUnitMarker,_lastTeam] spawn {
-						private ["_player", "_condition","_lastGroup","_newUnitMarker","_lastTeam"];
+						private ["_player", "_condition","_lastGroup","_newUnitMarker","_lastTeam","_isDead","_unconsciousStartTime"];
 						_player = _this select 0;
 						_lastGroup = _this select 1;
 						_newUnitMarker = _this select 2;
 						_lastTeam = _this select 3;
 						_condition = _player getVariable ["INS_REV_PVAR_is_unconscious",false];
+						_unconsciousStartTime = diag_tickTime;
+						_isDead = false;
 						while {_condition} do
 						{
 							_who_taking_care_of_injured = _player getVariable "INS_REV_PVAR_who_taking_care_of_injured";
@@ -321,65 +323,71 @@ if(isServer) then {
 								};
 							};
 							
-							// Check Life Time
-							if (INS_REV_CFG_life_time > 0) then {
-								if (!INS_REV_GVAR_is_lifeTime_over) then {
-									private "_lifeTime";
-									_lifeTime = round (INS_RES_GVAR_killed_time + INS_REV_CFG_life_time);
-									
-									if (time > _lifeTime) then {
-										INS_REV_GVAR_is_lifeTime_over = true;
-										
-										// Remove revive action
-										INS_REV_GVAR_end_unconscious = _player;
-										publicVariable "INS_REV_GVAR_end_unconscious";
-										["INS_REV_GVAR_end_unconscious", INS_REV_GVAR_end_unconscious] spawn INS_REV_FNCT_remove_actions;
-										
-										// Set variable for dead marker
-										_player setVariable ["INS_REV_PVAR_is_dead", true, true];
-									};
-								};
-							};
-							
-							sleep 0.3;
+							sleep 3;
 							
 							_condition = _player getVariable "INS_REV_PVAR_is_unconscious";
 							[_player] call INS_REV_FNCT_prevent_drown;
+							
+							if(diag_tickTime - _unconsciousStartTime > (60 * ("PARAM_AIReviveLimit" call BIS_fnc_getParamValue))) then {
+								_condition = false;
+								_isDead = true;
+							};
+							
 						};
 						
 						sleep 0.2;
 						
-						// Select primary weapon
-						_player selectWeapon (primaryWeapon _player);
+						if(_isDead) then {
 						
-						// Remove revive action
-						INS_REV_GVAR_end_unconscious = _player;
-						publicVariable "INS_REV_GVAR_end_unconscious";		
-						["INS_REV_GVAR_end_unconscious", INS_REV_GVAR_end_unconscious] spawn INS_REV_FNCT_remove_actions;
-						
-						// Remove unload action
-						if (!isNil "INS_REV_GVAR_is_loaded" && {INS_REV_GVAR_is_loaded} && INS_REV_CFG_medevac) then {
-							INS_REV_GVAR_del_unload = [INS_REV_GVAR_loaded_vehicle, _player];
-							publicVariable "INS_REV_GVAR_del_unload";
-							["INS_REV_GVAR_del_unload", INS_REV_GVAR_del_unload] spawn INS_REV_FNCT_remove_unload_action;
+							deleteMarker _newUnitMarker;
+							_player setVariable ["SA_Handling_Revive", true];
 							
-							INS_REV_GVAR_is_loaded = false;
-							INS_REV_GVAR_loaded_vehicle = nil;
-						};
+							// Remove revive action
+							INS_REV_GVAR_end_unconscious = _player;
+							publicVariable "INS_REV_GVAR_end_unconscious";		
+							["INS_REV_GVAR_end_unconscious", INS_REV_GVAR_end_unconscious] spawn INS_REV_FNCT_remove_actions;
+							
+							_player enableAI "ANIM";
+							
+							[_player, true] call INS_REV_FNCT_allowDamage;
+							
+							_player setDamage 1;
 						
-						[_player, true] call INS_REV_FNCT_allowDamage;
+						} else {
+						
+							// Select primary weapon
+							_player selectWeapon (primaryWeapon _player);
+							
+							// Remove revive action
+							INS_REV_GVAR_end_unconscious = _player;
+							publicVariable "INS_REV_GVAR_end_unconscious";		
+							["INS_REV_GVAR_end_unconscious", INS_REV_GVAR_end_unconscious] spawn INS_REV_FNCT_remove_actions;
+							
+							// Remove unload action
+							if (!isNil "INS_REV_GVAR_is_loaded" && {INS_REV_GVAR_is_loaded} && INS_REV_CFG_medevac) then {
+								INS_REV_GVAR_del_unload = [INS_REV_GVAR_loaded_vehicle, _player];
+								publicVariable "INS_REV_GVAR_del_unload";
+								["INS_REV_GVAR_del_unload", INS_REV_GVAR_del_unload] spawn INS_REV_FNCT_remove_unload_action;
+								
+								INS_REV_GVAR_is_loaded = false;
+								INS_REV_GVAR_loaded_vehicle = nil;
+							};
+							
+							[_player, true] call INS_REV_FNCT_allowDamage;
 
-						_player setVariable ["INS_REV_PVAR_isTeleport", false, true];
-						_player setVariable ["INS_REV_PVAR_is_dead", false, true];
-						
-						_player enableAI "ANIM";
-						
-						[_player,"AmovPercMstpSrasWrflDnon"] remoteExec ["playMove"]; 
-						
-						deleteMarker _newUnitMarker;
-						
-						[_player] joinSilent _lastGroup;
-						[_player,_lastTeam] remoteExec ["assignTeam"];
+							_player setVariable ["INS_REV_PVAR_isTeleport", false, true];
+							_player setVariable ["INS_REV_PVAR_is_dead", false, true];
+							
+							_player enableAI "ANIM";
+							
+							[_player,"AmovPercMstpSrasWrflDnon"] remoteExec ["playMove"]; 
+							
+							deleteMarker _newUnitMarker;
+							
+							[_player] joinSilent _lastGroup;
+							[_player,_lastTeam] remoteExec ["assignTeam"];
+							
+						};
 						
 					};
 					

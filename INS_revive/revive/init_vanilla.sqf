@@ -99,7 +99,7 @@ if (!isDedicated) then
 		player setVariable ["INS_REV_PVAR_is_dead", false, true];
 		
 		// Initialize other players state (JIP, disabledAI, ...)
-		_playableUnits = playableUnits;
+		_playableUnits = allUnits;
 		{
 			["INS_REV_GVAR_end_unconscious", _x] call INS_REV_FNCT_remove_actions;
 			
