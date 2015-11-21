@@ -1,5 +1,5 @@
-Author = "SA";
-onLoadName = "SA Tactical Operations";
+Author = "SA Duda and Thomas";
+onLoadName = "Operation Sandbox v2.0";
 loadScreen = "SA\images\sa.jpg";
 
 DisabledAI = true;
