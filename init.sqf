@@ -42,7 +42,7 @@ if((call SA_fnc_isAiServer) && "PARAM_GhostEnabled" call BIS_fnc_getParamValue =
 // Ghost Vehicle Spawn
 ["ground",vehspawn] execVM "SA\scripts\ghst_vehiclespawn\init_vehiclespawn.sqf";
 ["air",airspawn] execVM "SA\scripts\ghst_vehiclespawn\init_vehiclespawn.sqf";
-["sea",boatspawn] execVM "SA\scripts\ghst_vehiclespawn\init_vehiclespawn.sqf";
+//["sea",boatspawn] execVM "SA\scripts\ghst_vehiclespawn\init_vehiclespawn.sqf";
 
 // SA: TeamSpeak Addon (Server Only, Optional)
 execVM "SA\scripts\sa_teamspeak_addon.sqf";
