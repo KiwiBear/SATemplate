@@ -126,7 +126,7 @@ class Mission
 	randomSeed=9114063;
 	class Intel
 	{
-		briefingName="SA Tactical Operations (Altis) v2.2.0";
+		briefingName="SA Tactical Operations (Altis) v2.3";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.29999998;
