@@ -13,6 +13,22 @@ class PARAM_GhostEnabled
 	default= 1;
 	code = "";
 };
+class PARAM_AmbientAir
+{
+	title= "    Ambient Enemy Air Enabled?";
+	values[]= { 1,2 };
+	texts[]= { "True","False" };
+	default= 2;
+	code = "";
+};
+class PARAM_AmbientGround
+{
+	title= "    Ambient Enemy Troops Enabled?";
+	values[]= { 1,2 };
+	texts[]= { "True","False" };
+	default= 2;
+	code = "";
+};
 class PARAM_AISkill
 {
 	title= "    AI Accuracy and Speed Skill";
