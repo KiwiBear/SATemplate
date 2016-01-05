@@ -65,7 +65,7 @@ class Mission
 	randomSeed=16170137;
 	class Intel
 	{
-		briefingName="SA Operations (Kunduz) v2.4";
+		briefingName="SA Tactical Operations (Kunduz) v2.5";
 		resistanceWest=0;
 		resistanceEast=1;
 		startWeather=0.29999998;
