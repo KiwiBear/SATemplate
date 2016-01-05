@@ -60,7 +60,9 @@ class Mission
 	randomSeed=4757315;
 	class Intel
 	{
-		briefingName="SA Tactical Operations (Statis) v2.4";
+		briefingName="SA Tactical Operations (Statis) v2.5";
+		resistanceWest=0;
+		resistanceEast=1;
 		startWeather=0.29999998;
 		startWind=0.099999994;
 		startWaves=0.099999994;

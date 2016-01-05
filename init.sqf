@@ -59,4 +59,8 @@ if("PARAM_COS" call BIS_fnc_getParamValue == 1) then {execVM "cos\cosInit.sqf";}
 // SA: Improved Enemy AI Aiming Skills
 execVM "SA\scripts\sa_smart_enemy_aiming.sqf";
 
+// SA: Ear Plugs
+execVM "SA\scripts\sa_ear_plugs.sqf";
+
+
 // Add changes below this line //
