@@ -1854,10 +1854,11 @@ class Mission
 				class Item0
 				{
 					position[]={2581.842,52.762089,714.86865};
-					azimut=94.885925;
+					azimut=94.885902;
 					id=83;
 					side="LOGIC";
 					vehicle="HeadlessClient_F";
+					player="PLAY CDG";
 					leader=1;
 					skill=0.60000002;
 					text="headlessclient";
