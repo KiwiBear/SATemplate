@@ -152,6 +152,7 @@ class cfgFunctions {
 	#include "VAS\cfgfunctions.hpp"
 	#include "INS_revive\cfgfunctions.hpp"
 	#include "Ghost\functions\cfgfunctions.hpp"
+	#include "AICommand\cfgfunctions.hpp"
 };
 
 class CfgSounds {
@@ -177,4 +178,7 @@ class CfgNotifications
 		priority = 0;
 		sound = "defaultNotification";
 	};
+	
+	#include "AICommand\cfgnotifications.hpp"
+	
 };
