@@ -91,6 +91,7 @@ class SA
 		class updateLocalTask {description = "Update a task"};
 		class getLoadout {description = "Get a units loadout"};
 		class setLoadout {description = "Sets a units loadout"};
+		class formNewGroup {description = "Forms a new group with specified units"};
 	};
 	
 };
