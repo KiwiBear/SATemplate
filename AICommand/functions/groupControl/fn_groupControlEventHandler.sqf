@@ -56,6 +56,21 @@ if(isNil "_groupControlId") then {
 		{
 			if(AIC_fnc_getGroupControlShown(_x)) then {
 				if(_params select 1 == 1) then {			
+					[_x,"RIGHT_MOUSE_BUTTON_DOWN_MAP",[]] call AIC_fnc_groupControlEventHandler;
+				} else {
+					[_x,"LEFT_MOUSE_BUTTON_DOWN_MAP",[]] call AIC_fnc_groupControlEventHandler;
+				};		
+			};
+		} forEach _groupControls;
+	};
+	
+	
+	if(_event == "MouseButtonClick") then {
+		private ["_groupControls"];
+		_groupControls = AIC_fnc_getGroupControls();
+		{
+			if(AIC_fnc_getGroupControlShown(_x)) then {
+				if(_params select 1 == 1) then {			
 					[_x,"RIGHT_MOUSE_BUTTON_CLICK_MAP",[]] call AIC_fnc_groupControlEventHandler;
 				} else {
 					[_x,"LEFT_MOUSE_BUTTON_CLICK_MAP",[]] call AIC_fnc_groupControlEventHandler;
@@ -64,7 +79,6 @@ if(isNil "_groupControlId") then {
 		} forEach _groupControls;
 	};
 	
-
 } else {
 
 	// Individual group control event handler (specific to one group control)
@@ -101,7 +115,7 @@ if(isNil "_groupControlId") then {
 		};
 	};
 
-	if(_event == "LEFT_MOUSE_BUTTON_CLICK_MAP" ) then {
+	if(_event == "LEFT_MOUSE_BUTTON_DOWN_MAP" ) then {
 		if(AIC_fnc_getGroupControlAddingWaypoints(_groupControlId)) then {
 			[_group, [(AIC_fnc_getMouseMapPosition()),false,"MOVE"]] call AIC_fnc_addWaypoint;
 			[_groupControlId,"REFRESH_WAYPOINTS",[]] call AIC_fnc_groupControlEventHandler;
