@@ -49,6 +49,7 @@ class AICommand
 		class commandControlRemoveGroup {description = ""};
 		class commandControlEventHandler {description = ""};
 		class showCommandControl {description = ""};
+		class sendGoCode {description = ""};
 	};
 	
 	class GroupData

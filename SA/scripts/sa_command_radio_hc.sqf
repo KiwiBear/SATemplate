@@ -2,47 +2,20 @@
 [markerPos (_this select 0), [[1,"Take High Command","FUNC_takeHC",true,true,false],[2,"Release High Command","FUNC_releaseHC",true,false,true],[3,"Alpha Go","FUNC_alphaGo",true],[4,"Bravo Go","FUNC_bravoGo",true]], false, 2] call SA_fnc_createCommandRadio;
 
 FUNC_takeHC = {
-	{["ALL_EAST",true] call AIC_fnc_showCommandControl;} remoteExec ["bis_fnc_call", _this select 0]; 
+	{["ALL_WEST",true] call AIC_fnc_showCommandControl;} remoteExec ["bis_fnc_call", _this select 0]; 
 };
 
 FUNC_releaseHC = {
-	{["ALL_EAST",false] call AIC_fnc_showCommandControl;} remoteExec ["bis_fnc_call", _this select 0]; 
+	{["ALL_WEST",false] call AIC_fnc_showCommandControl;} remoteExec ["bis_fnc_call", _this select 0]; 
 };
 
 FUNC_alphaGo = {
-	private ["_commandControls"];
-	_commandControls = missionNamespace getVariable ["AIC_Command_Controls",[]];
-	{
-
-		private ["_shown","_groupsUnderCommand"];
-
-		_shown = missionNamespace getVariable ["AIC_Command_Control_" + _x + "_Shown",false];
-		if(_shown) then {
-			_groupsUnderCommand = missionNamespace getVariable ["AIC_Command_Control_" + _x + "_Groups",[]];
-			{
-				[_x,"ALPHA"] call AIC_fnc_sendWaypointGoCode;
-			} forEach (_groupsUnderCommand select 1);		
-		};
-	} forEach _commandControls;
+	{ ["ALPHA"] call AIC_fnc_sendGoCode; } remoteExec ["bis_fnc_call", _this select 0]; 
 };
 
 FUNC_bravoGo = {
-	private ["_commandControls"];
-	_commandControls = missionNamespace getVariable ["AIC_Command_Controls",[]];
-	{
-
-		private ["_shown","_groupsUnderCommand"];
-
-		_shown = missionNamespace getVariable ["AIC_Command_Control_" + _x + "_Shown",false];
-		if(_shown) then {
-			_groupsUnderCommand = missionNamespace getVariable ["AIC_Command_Control_" + _x + "_Groups",[]];
-			{
-				[_x,"BRAVO"] call AIC_fnc_sendWaypointGoCode;
-			} forEach (_groupsUnderCommand select 1);		
-		};
-	} forEach _commandControls;
+	{ ["BRAVO"] call AIC_fnc_sendGoCode; } remoteExec ["bis_fnc_call", _this select 0]; 
 };
-
 
 // OLD HC LOGIC:
 
