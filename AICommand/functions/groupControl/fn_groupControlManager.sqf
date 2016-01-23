@@ -22,6 +22,7 @@ if(isDedicated || !hasInterface) exitWith {};
 [] spawn {
 	waitUntil {!isNull AIC_MAP_CONTROL};
 	AIC_MAP_CONTROL ctrlAddEventHandler ["MouseButtonDown", "[nil, ""MouseButtonDown"",_this] call AIC_fnc_groupControlEventHandler" ];
+	AIC_MAP_CONTROL ctrlAddEventHandler ["MouseButtonClick", "[nil, ""MouseButtonClick"",_this] call AIC_fnc_groupControlEventHandler" ];
 	AIC_MAP_CONTROL ctrlAddEventHandler ["MouseMoving", "[nil, ""MouseMoving"",_this] call AIC_fnc_groupControlEventHandler" ];
 	AIC_MAP_CONTROL ctrlAddEventHandler ["MouseHolding", "[nil, ""MouseHolding"",_this] call AIC_fnc_groupControlEventHandler" ];
 };
