@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "..\..\functions.h"
 
 /*
 	Author: [SA] Duda
@@ -33,7 +33,7 @@ if(hasInterface) then {
 
 	// Create map element for command control
 	
-	[nil,false,true,true,_commandId] call AIC_fnc_createMapElement;
+	[false,true,true,_commandId] call AIC_fnc_createMapElement;
 	
 	// Create map element to contain all of the group controls within the command control
 	// This is used so that we can control visibility/enablement/foreground settings for all

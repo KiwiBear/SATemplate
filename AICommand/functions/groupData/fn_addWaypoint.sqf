@@ -1,3 +1,5 @@
+#include "..\functions.h"
+
 /*
 	Author: [SA] Duda
 
@@ -16,7 +18,8 @@
 			NUMBER: waypoint index
 			POSITION: waypoint world position,
 			BOOLEAN: waypoint disabled,
-			STRING: waypoint type
+			STRING: waypoint type,
+			STRING: waypoint action script
 	]
 */
 

@@ -1,9 +1,4 @@
-#include "functions.h"
-#include "..\interactiveIcon\functions.h"
-#include "..\..\groupData\functions.h"
-#include "..\commandControl\functions.h"
-#include "..\functions.h"
-#include "..\..\properties.h"
+#include "..\..\functions.h"
 
 /*
 	Author: [SA] Duda
@@ -34,11 +29,6 @@ _goCode = AIC_fnc_getGroupGoCode(_group);
 // Set current position to group's position
 
 AIC_fnc_setInteractiveIconPosition(_icon,_groupPosition);	
-
-// Draw actions
-{
-	[_x] call AIC_fnc_drawGroupVehicleAssignmentAction;
-} forEach (AIC_fnc_getGroupControlActions(_groupControlId));
 
 // Draw the interactive icon at the group's position
 

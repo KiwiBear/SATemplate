@@ -14,7 +14,7 @@ if (!isServer && isNull player) then {isJIP=true;} else {isJIP=false;};
 waitUntil {!isNil "INS_REV_FNCT_init_completed"};
 
 // SA: Ropes
-[] execVM "SA\scripts\sa_ropes.sqf";
+//[] execVM "SA\scripts\sa_ropes.sqf";
 
 // SA: Command Radio - High Command
 ["command_radio"] execVM "SA\scripts\sa_command_radio_hc.sqf";
