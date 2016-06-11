@@ -1,4 +1,4 @@
-#include "..\mapElements\interactiveIcon\functions.h"
+#include "..\functions.h"
 
 /*
 	Author: [SA] Duda
@@ -8,7 +8,7 @@
 
 	Parameter(s):
 	_this select 0: OBJECT - Vehicle object
-	_this select 1: COLOR - AIC Color (optional, default AIC_COLOR_RED)
+	_this select 1: COLOR - AIC Color (optional, default AIC_COLOR_BLUE)
 
 	Returns: 
 	STRING: Interactive Icon Id
@@ -17,7 +17,7 @@
 private ["_vehicle","_interactiveIconId"];
 
 _vehicle = param [0];
-_color = param [1,AIC_COLOR_RED];
+_color = param [1,AIC_COLOR_BLUE];
 
 private ["_iconSet"];
 

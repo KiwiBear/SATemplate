@@ -1,3 +1,5 @@
+#include "..\functions.h"
+
 /*
 	Author: [SA] Duda
 
@@ -50,20 +52,21 @@ AIC_Command_Menu_Action_Button_Last_Pressed = diag_tickTime;
 
 AIC_fnc_commandMenuEventHandler = {
 
-	private ["_event","_eventParams"];
+	private ["_event","_eventParams","_actionKeys"];
 	
 	_event = param [0];
 	_eventParams = param [1];
+	_actionKeys = actionKeys "ActionContext";
 	
 	if(_event == "KeyDown" || _event == "MouseButtonDown") then {
-		if( _eventParams select 1 == 2 || _eventParams select 1 == 57 ) then {
+		if( (_eventParams select 1) in _actionKeys || (65536 + (_eventParams select 1)) in _actionKeys ) then {
 			AIC_Command_Menu_Action_Button_Last_Pressed = diag_tickTime;
 		};
 	};
 	
 };	
 
-(findDisplay 46) displayAddEventHandler ["KeyDown", "[""KeyDown"",_this] call AIC_fnc_commandMenuEventHandler" ];
-(findDisplay 46) displayAddEventHandler ["MouseButtonDown", "[""MouseButtonDown"",_this] call AIC_fnc_commandMenuEventHandler" ];
+AIC_MAIN_DISPLAY displayAddEventHandler ["KeyDown", "[""KeyDown"",_this] call AIC_fnc_commandMenuEventHandler" ];
+AIC_MAIN_DISPLAY displayAddEventHandler ["MouseButtonDown", "[""MouseButtonDown"",_this] call AIC_fnc_commandMenuEventHandler" ];
 
 };

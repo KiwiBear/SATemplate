@@ -2,12 +2,19 @@ class AICommand
 {
 	tag = "AIC";
 	
+	class Main
+	{
+		file = "AICommand\functions";	
+		class initAICommand {description = ""};
+		class initAICommandClient {description = ""};
+	};
+	
 	class MapIcon
 	{
 		file = "AICommand\functions\mapIcon";	
 		class createMapIcon {description = ""};
 		class drawMapIcon {description = ""};
-		class mapIconDefinitions {description = ""; preInit=1};
+		class mapIconDefinitions {description = ""};
 	};
 	
 	class GroupData
@@ -26,20 +33,19 @@ class AICommand
 		class getAllActiveWaypoints {description = ""};
 		class getGroupActions {description = ""};
 		class setGroupActions {description = ""};
+		class getGroupAssignedVehicles {description = ""};
+		class setGroupAssignedVehicles {description = ""};
 	};
 
 	class CommandMenu
 	{
 		file = "AICommand\functions\commandMenu";
-		class commandMenuManager {description = ""; postInit=1};
+		class commandMenuManager {description = "";};
 		class showGroupCommandMenu {description = "";};
-		class showGroupGoCodeMenu {description = "";};
-		class showGroupConfirmMenu {description = "";};
 		class showGroupWpCommandMenu {description = "";};
 		class showGroupWpGoCodeMenu {description = "";};
-		class showGroupColorMenu {description = "";};
-		class showGroupCombatModeMenu {description = "";};
-		class showGroupBehaviourMenu {description = "";};
+		class addCommandMenuAction {description = "";};
+		class executeCommandMenuAction {description = "";};
 	};
 
 	class CR
@@ -81,21 +87,21 @@ class AICommand
 		class addMapElementChild {description = "";};
 		class deleteMapElement {description = "";};
 	};
-	
-	class ActionControlMapElement
+
+	class InputControlMapElement
 	{
-		file = "AICommand\functions\mapElements\actionControl";
-		class actionControlEventHandler {description = "";};
-		class createActionControl {description = "";};
-		class drawActionControl {description = "";};
-		class deleteActionControl {description = "";};
-		class actionControlManager {description = ""; postInit=1};
+		file = "AICommand\functions\mapElements\inputControl";
+		class inputControlEventHandler {description = "";};
+		class createInputControl {description = "";};
+		class drawInputControl {description = "";};
+		class deleteInputControl {description = "";};
+		class inputControlManager {description = "";};
 	};
 	
 	class InteractiveIconMapElement
 	{
 		file = "AICommand\functions\mapElements\interactiveIcon";
-		class interactiveIconManager {description = ""; postInit=1};
+		class interactiveIconManager {description = ""};
 		class createInteractiveIcon {description = ""};
 		class drawInteractiveIcon {description = ""};
 		class handleInteractiveIconEvent {description = ""};
@@ -115,7 +121,7 @@ class AICommand
 		class drawGroupControl {description = ""};
 		class groupControlEventHandler {description = ""};
 		class groupControlWaypointEventHandler {description = ""};
-		class groupControlManager {description = ""; postInit=1};
+		class groupControlManager {description = ""};
 		class showGroupReport {description = ""};
 		class removeGroupControl {description = ""};
 	};
@@ -123,7 +129,7 @@ class AICommand
 	class CommandControlMapElement
 	{
 		file = "AICommand\functions\mapElements\commandControl";
-		class commandControlManager {description = ""; postInit=1};
+		class commandControlManager {description = ""};
 		class createCommandControl {description = ""};
 		class drawCommandControl {description = ""};
 		class commandControlAddGroup {description = ""};
@@ -133,15 +139,10 @@ class AICommand
 		class sendGoCode {description = ""};
 	};
 	
-	class ActionControlsGroupVehicleAssignmentAction
+	class Util
 	{
-		file = "AICommand\functions\mapElements\actionControls\groupVehicleAssignmentAction";
-		class createGroupVehicleAssignmentAction {description = "";};
-		class deleteGroupVehicleAssignmentAction {description = "";};
-		class drawGroupVehicleAssignmentAction {description = "";};
-		class groupVehicleAssignmentActionManager {description = ""; postInit=1};
-		class groupVehicleAssignmentActionEventHandler {description = "";};
+		file = "AICommand\functions\util";
+		class getInVehicle {description = "";};
 	};
-	
 	
 };
